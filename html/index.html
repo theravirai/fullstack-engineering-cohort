@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Learning Page</title>
+</head>
+
+<body>
+
+    <!-- HTML Basics -->
+    <header>
+        <h1>Welcome to HTML Learning</h1>
+        <p>
+            This page demonstrates HTML Basics, Table Tags, and Form Tags.
+        </p>
+    </header>
+
+    <hr />
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#about">About</a> |
+        <a href="#table">Student Table</a> |
+        <a href="#form">Registration Form</a>
+    </nav>
+
+    <hr />
+
+    <!-- Section Example -->
+    <section id="about">
+        <h2>About HTML</h2>
+
+        <p>
+            HTML stands for <strong>HyperText Markup Language</strong>.
+            It is used to create webpages.
+        </p>
+
+        <p>
+            You can add:
+        </p>
+
+        <!-- List Example -->
+        <ul>
+            <li>Headings</li>
+            <li>Paragraphs</li>
+            <li>Images</li>
+            <li>Tables</li>
+            <li>Forms</li>
+        </ul>
+
+        <!-- Image Example -->
+        <img 
+            src="https://via.placeholder.com/300x150" 
+            alt="Sample Image"
+        />
+
+        <br /><br />
+
+        <!-- Link Example -->
+        <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">
+            Learn More About HTML
+        </a>
+    </section>
+
+    <hr />
+
+    <!-- HTML Table Tags -->
+    <section id="table">
+        <h2>Student Table</h2>
+
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>Age</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Alice</td>
+                    <td>HTML</td>
+                    <td>20</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Bob</td>
+                    <td>CSS</td>
+                    <td>21</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>Charlie</td>
+                    <td>JavaScript</td>
+                    <td>22</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <hr />
+
+    <!-- HTML Form Tags -->
+    <section id="form">
+        <h2>Student Registration Form</h2>
+
+        <form>
+
+            <!-- Text Input -->
+            <label for="name">Full Name:</label>
+            <br />
+            <input type="text" id="name" name="name" placeholder="Enter your name" />
+            <br /><br />
+
+            <!-- Email Input -->
+            <label for="email">Email:</label>
+            <br />
+            <input type="email" id="email" name="email" placeholder="Enter your email" />
+            <br /><br />
+
+            <!-- Password -->
+            <label for="password">Password:</label>
+            <br />
+            <input type="password" id="password" name="password" />
+            <br /><br />
+
+            <!-- Radio Buttons -->
+            <p>Gender:</p>
+
+            <input type="radio" id="male" name="gender" value="Male" />
+            <label for="male">Male</label>
+
+            <input type="radio" id="female" name="gender" value="Female" />
+            <label for="female">Female</label>
+
+            <br /><br />
+
+            <!-- Checkbox -->
+            <p>Skills:</p>
+
+            <input type="checkbox" id="html" name="skills" value="HTML" />
+            <label for="html">HTML</label>
+
+            <input type="checkbox" id="css" name="skills" value="CSS" />
+            <label for="css">CSS</label>
+
+            <input type="checkbox" id="js" name="skills" value="JavaScript" />
+            <label for="js">JavaScript</label>
+
+            <br /><br />
+
+            <!-- Dropdown -->
+            <label for="country">Country:</label>
+            <br />
+
+            <select id="country" name="country">
+                <option value="">Select Country</option>
+                <option value="india">India</option>
+                <option value="germany">Germany</option>
+                <option value="usa">USA</option>
+            </select>
+
+            <br /><br />
+
+            <!-- Textarea -->
+            <label for="message">Message:</label>
+            <br />
+
+            <textarea 
+                id="message" 
+                name="message" 
+                rows="5" 
+                cols="30"
+                placeholder="Write something..."
+            ></textarea>
+
+            <br /><br />
+
+            <!-- Buttons -->
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+
+        </form>
+    </section>
+
+    <hr />
+
+    <!-- Footer -->
+    <footer>
+        <p>Created for HTML Practice</p>
+    </footer>
+
+</body>
+</html>
