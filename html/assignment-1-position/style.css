@@ -126,3 +126,149 @@ body{
   font-size:22px;
   box-shadow:0 5px 15px rgba(0,0,0,0.05);
 }
+
+/* CARD SECTION */
+
+.cards{
+  display:flex;
+  gap:25px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-bottom:50px;
+}
+
+.card{
+  width:280px;
+  background:white;
+  border-radius:30px;
+  padding:20px;
+  position:relative;
+  box-shadow:0 10px 20px rgba(0,0,0,0.06);
+}
+
+.pokemon-number{
+  color:#9a9a9a;
+  font-weight:600;
+}
+
+.heart-icon{
+  position:absolute;
+  top:20px;
+  right:20px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#f7f7f7;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.pokemon-image{
+  width:100%;
+  height:250px;
+  object-fit:contain;
+  margin-top:10px;
+}
+
+.card h2{
+  margin-top:10px;
+  margin-bottom:20px;
+  color:#1d2a4d;
+}
+
+.card-bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.type{
+  padding:8px 14px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.arrow-btn{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:#f7f7f7;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.grass{
+  background:#daf5dc;
+  color:#3e9b48;
+}
+
+.dark{
+  background:#e4e7ef;
+  color:#4a5878;
+}
+
+.fire{
+  background:#ffdcd2;
+  color:#e35b3f;
+}
+
+.water{
+  background:#dde4ff;
+  color:#4963ff;
+}
+
+.grass-card{
+  border-bottom:5px solid #5fca69;
+}
+
+.dark-card{
+  border-bottom:5px solid #5f708d;
+}
+
+.fire-card{
+  border-bottom:5px solid #ff7758;
+}
+
+.water-card{
+  border-bottom:5px solid #7088ff;
+}
+
+
+/* FOOTER */
+
+.footer{
+  width:100%;
+  background:white;
+  border-radius:25px;
+  padding:30px;
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.footer-box{
+  display:flex;
+  align-items:flex-start;
+  gap:15px;
+  flex:1;
+  min-width:200px;
+}
+
+.footer-box i{
+  font-size:30px;
+}
+
+.footer-box h4{
+  margin-bottom:8px;
+  color:#1d2a4d;
+}
+
+.footer-box p{
+  color:gray;
+  line-height:1.4;
+  font-size:14px;
+}
