@@ -322,7 +322,7 @@ background-color: #F6F7F6;
 
   padding: 16px;
 
-  border: 1px solid #d1d5db;
+  border: 2px solid blue;
 
   outline: none;
 
@@ -350,4 +350,54 @@ background-color: #F6F7F6;
 .subscribe button:hover {
   background-color: black;
   color: white;
+}
+
+/* FOOTER */
+
+footer {
+  background-color: white;
+
+  padding: 40px 60px;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 20px;
+
+  font-size: 28px;
+}
+
+.social-icons i {
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.social-icons i:hover {
+  transform: translateY(-5px);
+}
+
+.footer-links {
+  display: flex;
+  gap: 30px;
+}
+
+.footer-links a {
+  text-decoration: none;
+
+  color: black;
+
+  text-transform: uppercase;
+
+  font-weight: 550;
+
+  transition: 0.3s;
+}
+
+.footer-links a:hover {
+  opacity: 0.6;
 }
