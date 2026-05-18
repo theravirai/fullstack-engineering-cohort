@@ -10,7 +10,7 @@ html {
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: #1f2937;
   padding: 15px;
 }
@@ -35,6 +35,7 @@ img {
   position: relative;
 
   padding: 40px 60px;
+  margin-bottom: 20px;
 }
 
 .hero::before {
@@ -71,7 +72,7 @@ img {
 }
 
 .nav-links a {
-  color: white;
+  color: #ffffff;
 
   text-decoration: none;
   text-transform: uppercase;
@@ -111,8 +112,8 @@ img {
 }
 
 .subscribe-btn:hover {
-  background-color: white;
-  color: black;
+  background-color: rgb(7, 6, 6);
+  color: white;
 }
 
 .hero-content {
@@ -160,7 +161,7 @@ img {
 
 .articles {
   padding: 100px 60px;
-  background-color: #F6F7F6;
+  background-color: #f6f7f6;
 }
 
 .section-title {
@@ -176,7 +177,7 @@ img {
 }
 
 .section-title .line {
-  margin: 20px auto 0;
+  margin: 30px auto 0;
 }
 
 .cards {
@@ -203,9 +204,9 @@ img {
 }
 
 .card {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 
-  overflow:hidden;
+  overflow: hidden;
 
   box-shadow: 0 10px 30px rgb(0, 0, 0);
 
@@ -292,14 +293,14 @@ img {
 
   font-size: 18px;
 
-  max-width: 600px;
+  max-width: 550px;
 }
 
 /* SUBSCRIBE SECTION */
 
 .subscribe {
   padding: 120px 20px;
-background-color: #F6F7F6;
+  background-color: #f6f7f6;
   text-align: center;
 }
 
@@ -322,7 +323,7 @@ background-color: #F6F7F6;
 
   padding: 16px;
 
-  border: 2px solid blue;
+  border: 1px solid black;
 
   outline: none;
 
@@ -362,7 +363,8 @@ footer {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 90px;
+  margin-bottom: 60px;
 }
 
 .social-icons {
