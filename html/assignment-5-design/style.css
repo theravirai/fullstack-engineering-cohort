@@ -1,0 +1,353 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #FFFFFF;
+  color: #1f2937;
+  padding: 15px;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* HERO SECTION */
+
+.hero {
+  min-height: 100vh;
+
+  background-image: url("https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?q=80&w=1887&auto=format&fit=crop");
+
+  background-size: cover;
+  background-position: center;
+
+  position: relative;
+
+  padding: 40px 60px;
+}
+
+.hero::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.navbar {
+  position: relative;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  z-index: 2;
+}
+
+.logo {
+  color: white;
+
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-links a {
+  color: white;
+
+  text-decoration: none;
+  text-transform: uppercase;
+
+  font-size: 14px;
+  letter-spacing: 1px;
+
+  position: relative;
+
+  transition: 0.3s;
+}
+
+.nav-links a::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -5px;
+
+  width: 0%;
+  height: 2px;
+
+  background-color: white;
+
+  transition: 0.3s;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.subscribe-btn {
+  border: 1px solid white;
+
+  padding: 10px 18px;
+}
+
+.subscribe-btn:hover {
+  background-color: white;
+  color: black;
+}
+
+.hero-content {
+  position: relative;
+
+  height: 85vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+
+  z-index: 2;
+}
+
+.hero-content h1 {
+  font-size: 120px;
+  letter-spacing: 10px;
+}
+
+.hero-content p {
+  text-transform: uppercase;
+
+  letter-spacing: 4px;
+
+  margin-top: 10px;
+}
+
+.line {
+  width: 80px;
+  height: 3px;
+
+  background-color: white;
+
+  margin-top: 20px;
+}
+
+.dark {
+  background-color: black;
+}
+
+/* ARTICLES SECTION */
+
+.articles {
+  padding: 100px 60px;
+  background-color: #F6F7F6;
+}
+
+.section-title {
+  text-align: center;
+}
+
+.section-title h2 {
+  font-size: 48px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 3px;
+}
+
+.section-title .line {
+  margin: 20px auto 0;
+}
+
+.cards {
+  /* display: grid;
+
+  grid-template-columns: repeat(3, 1fr); */
+
+  /* display: flex; */
+  /* align-items:center; */
+  /* justify-content: center; */
+
+  /* gap: 30px; */
+
+  /* margin-top: 30px; */
+  display: grid;
+
+  grid-template-columns: repeat(3, 340px);
+
+  justify-content: center;
+
+  gap: 40px;
+
+  margin-top: 30px;
+}
+
+.card {
+  background-color: #FFFFFF;
+
+  overflow:hidden;
+
+  box-shadow: 0 10px 30px rgb(0, 0, 0);
+
+  transition: 0.4s;
+}
+
+.card:hover {
+  transform: translateY(-12px);
+}
+
+.card-image {
+  height: 280px;
+  /* width: 250px; */
+}
+
+.card-content {
+  padding: 40px 30px;
+
+  text-align: center;
+}
+
+.small-line {
+  width: 50px;
+  height: 2px;
+
+  background-color: black;
+
+  margin: 0 auto 25px;
+}
+
+.card-content h3 {
+  line-height: 1.5;
+
+  font-size: 19px;
+
+  font-weight: 550;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* ABOUT SECTION */
+
+.about {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  min-height: 90vh;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.about-image img {
+  height: 100%;
+}
+
+.about-content {
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 80px;
+
+  text-align: center;
+}
+
+.about-content h2 {
+  font-size: 50px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 3px;
+}
+
+.about-content .line {
+  margin: 25px 0 40px;
+}
+
+.about-content p {
+  line-height: 2;
+
+  font-size: 18px;
+
+  max-width: 600px;
+}
+
+/* SUBSCRIBE SECTION */
+
+.subscribe {
+  padding: 120px 20px;
+background-color: #F6F7F6;
+  text-align: center;
+}
+
+.subscribe h2 {
+  font-size: 54px;
+
+  text-transform: uppercase;
+
+  margin-bottom: 15px;
+}
+
+.subscribe p {
+  margin-bottom: 35px;
+
+  font-size: 18px;
+}
+
+.subscribe input {
+  width: 400px;
+
+  padding: 16px;
+
+  border: 1px solid #d1d5db;
+
+  outline: none;
+
+  font-size: 16px;
+}
+
+.subscribe button {
+  display: block;
+
+  margin: 30px auto 0;
+
+  padding: 14px 35px;
+
+  border: 1px solid black;
+
+  background-color: transparent;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.subscribe button:hover {
+  background-color: black;
+  color: white;
+}
