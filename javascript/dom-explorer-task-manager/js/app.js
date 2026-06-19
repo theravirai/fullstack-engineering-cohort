@@ -1,2 +1,7 @@
 // js/app.js
-console.log('DOM Explorer Task Manager module initialized.');
+import { initTaskForm } from './taskManager.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Explorer Task Manager module initialized.');
+    initTaskForm();
+});

@@ -21,10 +21,29 @@
             </div>
         </header>
 
-        <!-- Main Layout Section -->
         <main class="main-content">
             <div id="task-manager-app" class="card">
-                <!-- Task Manager content will go here (Form in Phase 2, List in Phase 3) -->
+                <form id="task-form" aria-label="Create a new task">
+                    <div class="form-group">
+                        <label for="task-title">Task Title</label>
+                        <input type="text" id="task-title" placeholder="Enter task title..." required autocomplete="off">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-category">Category</label>
+                            <select id="task-category" required>
+                                <option value="" disabled selected>Select category...</option>
+                                <option value="work">💼 Work</option>
+                                <option value="personal">👤 Personal</option>
+                                <option value="shopping">🛒 Shopping</option>
+                                <option value="health">❤️ Health</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="add-task-btn">
+                            Add Task
+                        </button>
+                    </div>
+                </form>
             </div>
         </main>
     </div>
