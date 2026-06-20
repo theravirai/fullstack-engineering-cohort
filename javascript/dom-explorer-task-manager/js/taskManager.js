@@ -53,7 +53,7 @@ function createTaskCard(task) {
     // Append title and badge to the content container
     contentDiv.append(titleEl, categoryBadge);
 
-    // 4. Construct Actions Wrapper (Complete, Edit, Delete button placeholders)
+    // 4. Construct Actions Wrapper (Complete, Edit, Delete buttons with event handlers)
     const actionsDiv = document.createElement('div');
     actionsDiv.classList.add('task-actions');
 
@@ -61,16 +61,53 @@ function createTaskCard(task) {
     completeBtn.className = 'btn-icon btn-complete';
     completeBtn.setAttribute('aria-label', 'Complete task');
     completeBtn.appendChild(document.createTextNode('✓'));
+    completeBtn.addEventListener('click', () => {
+        // Toggle task status in memory
+        task.status = task.status === 'pending' ? 'completed' : 'pending';
+        // Update DOM attributes
+        card.setAttribute('data-status', task.status);
+        console.log(`[Status Toggle] Task ${task.id} set to: ${task.status}`);
+    });
 
     const editBtn = document.createElement('button');
     editBtn.className = 'btn-icon btn-edit';
     editBtn.setAttribute('aria-label', 'Edit task');
     editBtn.appendChild(document.createTextNode('✎'));
+    editBtn.addEventListener('click', () => {
+        const newTitle = prompt('Edit task title:', task.title);
+        if (newTitle === null) return; // Cancelled
+        
+        const trimmedTitle = newTitle.trim();
+        if (trimmedTitle === '') {
+            alert('Task title cannot be empty.');
+            return;
+        }
+
+        // Update in-memory state
+        task.title = trimmedTitle;
+
+        // Update title element in the DOM using replaceWith()
+        const oldTitleEl = card.querySelector('.task-title');
+        if (oldTitleEl) {
+            const newTitleEl = document.createElement('h3');
+            newTitleEl.classList.add('task-title');
+            newTitleEl.appendChild(document.createTextNode(task.title));
+            oldTitleEl.replaceWith(newTitleEl);
+        }
+        console.log(`[Edit Title] Task ${task.id} updated to: ${task.title}`);
+    });
 
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'btn-icon btn-delete';
     deleteBtn.setAttribute('aria-label', 'Delete task');
     deleteBtn.appendChild(document.createTextNode('🗑'));
+    deleteBtn.addEventListener('click', () => {
+        // Remove from state array
+        tasks = tasks.filter(t => t.id !== task.id);
+        // Remove card element from DOM
+        card.remove();
+        console.log(`[Delete Task] Task ${task.id} removed from memory and DOM`);
+    });
 
     // Append buttons to the actions container using append
     actionsDiv.append(completeBtn, editBtn, deleteBtn);
