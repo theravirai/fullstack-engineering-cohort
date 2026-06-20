@@ -76,6 +76,31 @@ body {
     border: 1px solid var(--card-border);
 }
 
+/* Theme Toggle Button Styling */
+.btn-theme-toggle {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    box-shadow: var(--shadow);
+    transition: background-color 0.3s, border-color 0.3s, transform 0.3s ease;
+}
+
+.btn-theme-toggle:hover {
+    background-color: var(--secondary-color);
+    transform: scale(1.1) rotate(15deg);
+}
+
+.btn-theme-toggle:active {
+    transform: scale(0.95);
+}
+
 /* Main Layout Card */
 .card {
     background-color: var(--card-bg);
