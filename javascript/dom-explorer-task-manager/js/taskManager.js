@@ -53,7 +53,7 @@ function createTaskCard(task) {
     // Append title and badge to the content container
     contentDiv.append(titleEl, categoryBadge);
 
-    // 4. Construct Actions Wrapper (Complete, Edit, Delete buttons with event handlers)
+    // 4. Construct Actions Wrapper (Complete, Edit, Delete button elements)
     const actionsDiv = document.createElement('div');
     actionsDiv.classList.add('task-actions');
 
@@ -61,53 +61,16 @@ function createTaskCard(task) {
     completeBtn.className = 'btn-icon btn-complete';
     completeBtn.setAttribute('aria-label', 'Complete task');
     completeBtn.appendChild(document.createTextNode('✓'));
-    completeBtn.addEventListener('click', () => {
-        // Toggle task status in memory
-        task.status = task.status === 'pending' ? 'completed' : 'pending';
-        // Update DOM attributes
-        card.setAttribute('data-status', task.status);
-        console.log(`[Status Toggle] Task ${task.id} set to: ${task.status}`);
-    });
 
     const editBtn = document.createElement('button');
     editBtn.className = 'btn-icon btn-edit';
     editBtn.setAttribute('aria-label', 'Edit task');
     editBtn.appendChild(document.createTextNode('✎'));
-    editBtn.addEventListener('click', () => {
-        const newTitle = prompt('Edit task title:', task.title);
-        if (newTitle === null) return; // Cancelled
-        
-        const trimmedTitle = newTitle.trim();
-        if (trimmedTitle === '') {
-            alert('Task title cannot be empty.');
-            return;
-        }
-
-        // Update in-memory state
-        task.title = trimmedTitle;
-
-        // Update title element in the DOM using replaceWith()
-        const oldTitleEl = card.querySelector('.task-title');
-        if (oldTitleEl) {
-            const newTitleEl = document.createElement('h3');
-            newTitleEl.classList.add('task-title');
-            newTitleEl.appendChild(document.createTextNode(task.title));
-            oldTitleEl.replaceWith(newTitleEl);
-        }
-        console.log(`[Edit Title] Task ${task.id} updated to: ${task.title}`);
-    });
 
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'btn-icon btn-delete';
     deleteBtn.setAttribute('aria-label', 'Delete task');
     deleteBtn.appendChild(document.createTextNode('🗑'));
-    deleteBtn.addEventListener('click', () => {
-        // Remove from state array
-        tasks = tasks.filter(t => t.id !== task.id);
-        // Remove card element from DOM
-        card.remove();
-        console.log(`[Delete Task] Task ${task.id} removed from memory and DOM`);
-    });
 
     // Append buttons to the actions container using append
     actionsDiv.append(completeBtn, editBtn, deleteBtn);
@@ -192,4 +155,53 @@ export function initTaskForm() {
         // Reset form inputs (clears title input and resets select to default option)
         taskForm.reset();
     });
+
+    // Centralized event listener on the parent task list container for Event Delegation
+    const taskList = document.getElementById('task-list');
+    if (taskList) {
+        taskList.addEventListener('click', (e) => {
+            // Find the closest button that matches our icon buttons
+            const btn = e.target.closest('.btn-icon');
+            if (!btn) return;
+
+            // Find the closest parent task card container to read dataset metadata
+            const card = btn.closest('.task-card');
+            if (!card) return;
+
+            const taskId = card.getAttribute('data-id');
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            if (btn.classList.contains('btn-complete')) {
+                // Complete Action
+                task.status = task.status === 'pending' ? 'completed' : 'pending';
+                card.setAttribute('data-status', task.status);
+                console.log(`[Delegation Toggle] Task ${taskId} set to: ${task.status}`);
+            } else if (btn.classList.contains('btn-edit')) {
+                // Edit Action
+                const newTitle = prompt('Edit task title:', task.title);
+                if (newTitle === null) return;
+                const trimmedTitle = newTitle.trim();
+                if (trimmedTitle === '') {
+                    alert('Task title cannot be empty.');
+                    return;
+                }
+                task.title = trimmedTitle;
+
+                const oldTitleEl = card.querySelector('.task-title');
+                if (oldTitleEl) {
+                    const newTitleEl = document.createElement('h3');
+                    newTitleEl.classList.add('task-title');
+                    newTitleEl.appendChild(document.createTextNode(task.title));
+                    oldTitleEl.replaceWith(newTitleEl);
+                }
+                console.log(`[Delegation Edit] Task ${taskId} updated to: ${task.title}`);
+            } else if (btn.classList.contains('btn-delete')) {
+                // Delete Action
+                tasks = tasks.filter(t => t.id !== taskId);
+                card.remove();
+                console.log(`[Delegation Delete] Task ${taskId} removed from memory and DOM`);
+            }
+        });
+    }
 }
