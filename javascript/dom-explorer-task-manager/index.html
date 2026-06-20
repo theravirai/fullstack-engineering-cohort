@@ -50,6 +50,27 @@
                     <!-- Task cards will be rendered here dynamically -->
                 </div>
             </div>
+
+            <!-- Event Propagation Demo -->
+            <div id="event-propagation-card" class="card mt-2">
+                <h2>Event Propagation Demo</h2>
+                <p class="section-desc">Click the button below to trigger and observe Event Bubbling and Event Capturing. Check your browser console for the logs.</p>
+                
+                <div class="demo-container">
+                    <!-- Grandparent Box -->
+                    <div id="grandparent-box" class="prop-box grandparent">
+                        <span class="prop-label">Grandparent Element</span>
+                        <!-- Parent Box -->
+                        <div id="parent-box" class="prop-box parent">
+                            <span class="prop-label">Parent Element</span>
+                            <!-- Child Button -->
+                            <button id="child-button" class="btn btn-primary child">
+                                Click Me (Child Button)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
