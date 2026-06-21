@@ -100,6 +100,16 @@ export function addTask(title, category) {
     const taskList = document.getElementById('task-list');
     if (taskList) {
         const card = createTaskCard(task);
+        
+        // If there's an active search query, filter the new card immediately
+        const searchInput = document.getElementById('task-search');
+        if (searchInput && searchInput.value) {
+            const query = searchInput.value.toLowerCase().trim();
+            if (!task.title.toLowerCase().includes(query)) {
+                card.classList.add('is-hidden');
+            }
+        }
+        
         // Add card to DOM using append()
         taskList.append(card);
     } else {
@@ -204,4 +214,49 @@ export function initTaskForm() {
             }
         });
     }
+
+    // Initialize task search functionality (Phase 9)
+    initTaskSearch();
+}
+
+/**
+ * Filters the visible task cards in the DOM based on the query string.
+ * @param {string} query - The search query text.
+ */
+export function filterTasks(query) {
+    const lowercaseQuery = query.toLowerCase().trim();
+    const taskCards = document.querySelectorAll('.task-card');
+
+    taskCards.forEach(card => {
+        const titleEl = card.querySelector('.task-title');
+        if (titleEl) {
+            // PROPERTY vs ATTRIBUTE demonstration/use:
+            // - titleEl.textContent is a live DOM property reflecting the current visible text node content.
+            const titleText = titleEl.textContent.toLowerCase();
+            
+            if (titleText.includes(lowercaseQuery)) {
+                card.classList.remove('is-hidden');
+            } else {
+                card.classList.add('is-hidden');
+            }
+        }
+    });
+    console.log(`[Task Search] Filtered cards using query: "${lowercaseQuery}"`);
+}
+
+/**
+ * Initializes the task search input event listener.
+ */
+export function initTaskSearch() {
+    const searchInput = document.getElementById('task-search');
+    if (!searchInput) {
+        console.warn('Search input element not found in DOM.');
+        return;
+    }
+
+    searchInput.addEventListener('input', (e) => {
+        // e.target.value retrieves the current property value of the input element
+        // rather than its initial HTML attribute value.
+        filterTasks(e.target.value);
+    });
 }

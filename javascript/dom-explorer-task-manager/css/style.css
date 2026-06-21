@@ -490,3 +490,24 @@ select:focus {
         top: auto;
     }
 }
+
+/* Phase 9: Task Search Styles */
+.search-container {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--card-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.search-container label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.task-card.is-hidden {
+    display: none !important;
+}
