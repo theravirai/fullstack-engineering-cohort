@@ -71,6 +71,56 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Browser Rendering Pipeline -->
+            <div id="rendering-pipeline-card" class="card mt-2">
+                <h2>Browser Rendering Pipeline</h2>
+                <p class="section-desc">How a browser processes source files (HTML/CSS) to draw pixels on the screen.</p>
+                
+                <div class="pipeline-flow">
+                    <!-- Step 1: HTML Source -->
+                    <div class="pipeline-step">
+                        <div class="step-num">01</div>
+                        <h3>HTML Bytes</h3>
+                        <p>Raw bytes are fetched from server and decoded into characters based on document encoding.</p>
+                    </div>
+
+                    <!-- Step 2: Tokenization / Parsing -->
+                    <div class="pipeline-step">
+                        <div class="step-num">02</div>
+                        <h3>Tokenization</h3>
+                        <p>Characters parsed into discrete HTML tokens (StartTag, EndTag, Attribute, Characters).</p>
+                    </div>
+
+                    <!-- Step 3: DOM Tree -->
+                    <div class="pipeline-step">
+                        <div class="step-num">03</div>
+                        <h3>DOM Tree</h3>
+                        <p>Tokens are converted into nodes and linked in a tree representation of document structure.</p>
+                    </div>
+
+                    <!-- Step 4: CSSOM Tree -->
+                    <div class="pipeline-step">
+                        <div class="step-num">04</div>
+                        <h3>CSSOM Tree</h3>
+                        <p>Styling rules are parsed and arranged in a stylesheet rules hierarchy.</p>
+                    </div>
+
+                    <!-- Step 5: Render Tree -->
+                    <div class="pipeline-step">
+                        <div class="step-num">05</div>
+                        <h3>Render Tree</h3>
+                        <p>DOM and CSSOM are combined, filtering out non-rendered elements (e.g. <code>head</code>, <code>display: none</code>).</p>
+                    </div>
+
+                    <!-- Step 6: Layout & Paint -->
+                    <div class="pipeline-step">
+                        <div class="step-num">06</div>
+                        <h3>Layout & Paint</h3>
+                        <p>Compute absolute dimensions/positions (Layout) and fill in physical screen pixels (Painting).</p>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 

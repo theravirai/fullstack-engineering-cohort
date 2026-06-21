@@ -5,8 +5,8 @@
     --text-color: #0f172a;
     --card-bg: #ffffff;
     --card-border: #e2e8f0;
-    --primary-color: #4f46e5;
-    --primary-hover: #4338ca;
+    --primary-color: #4799b7;
+    --primary-hover: #3875ca;
     --secondary-color: #f1f5f9;
     --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
@@ -394,3 +394,99 @@ select:focus {
     align-self: center;
 }
 
+/* Phase 8 Rendering Pipeline Styling */
+.pipeline-flow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+}
+
+.pipeline-step {
+    background-color: var(--secondary-color);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.pipeline-step:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.step-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.pipeline-step h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.pipeline-step p {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    line-height: 1.45;
+}
+
+/* Arrow connecting steps */
+.pipeline-step::after {
+    content: "➔";
+    position: absolute;
+    right: -1.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    pointer-events: none;
+    transition: color 0.3s;
+}
+
+.pipeline-step:last-child::after {
+    display: none;
+}
+
+/* Responsive Grid & Connectors */
+@media (min-width: 1025px) {
+    .pipeline-flow {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .pipeline-step:nth-child(3n)::after {
+        display: none;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    .pipeline-flow {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.25rem;
+    }
+    .pipeline-step:nth-child(2n)::after {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .pipeline-flow {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+    .pipeline-step::after {
+        transform: translateX(-50%) rotate(90deg);
+        right: auto;
+        left: 50%;
+        bottom: -1.75rem;
+        top: auto;
+    }
+}
