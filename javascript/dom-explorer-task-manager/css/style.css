@@ -535,3 +535,29 @@ select:focus {
     font-size: 1rem;
     margin-left: 0.25rem;
 }
+
+/* Push the button to the far right inside the flexbox container */
+#clear-all-btn {
+    margin-left: auto;
+}
+
+/* Secondary Button Styling */
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+}
+
+.btn-secondary:hover {
+    background-color: var(--card-border);
+    color: #dc2626; /* Crimson red highlight for danger actions */
+    border-color: #dc2626;
+}
+
+/* Small Button Sizing */
+.btn-sm {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    font-weight: 600;
+}

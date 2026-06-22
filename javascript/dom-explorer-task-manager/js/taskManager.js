@@ -217,6 +217,33 @@ export function initTaskForm() {
         });
     }
 
+    // Clear All Tasks Button Click Handler
+    const clearAllBtn = document.getElementById('clear-all-btn');
+    if (clearAllBtn) {
+        clearAllBtn.addEventListener('click', () => {
+            if (tasks.length === 0) {
+                alert('No tasks to clear.');
+                return;
+            }
+            
+            const confirmed = confirm('Are you sure you want to clear all tasks? This action cannot be undone.');
+            if (confirmed) {
+                // Clear the state array
+                tasks = [];
+                
+                // Clear all child nodes from the DOM container (using modern replaceChildren API)
+                const taskList = document.getElementById('task-list');
+                if (taskList) {
+                    taskList.replaceChildren();
+                }
+                
+                // Update counters
+                updateCounters();
+                console.log('[Clear All] Cleared all tasks from memory and DOM');
+            }
+        });
+    }
+
     // Initialize task search and filtering functionality (Phase 9)
     initTaskFilters();
     
