@@ -105,6 +105,9 @@ export function addTask(title, category) {
         
         // Apply current active filters to the new task card
         applyFilters();
+
+        // Update task counters (Phase 9)
+        updateCounters();
     } else {
         console.warn('Task list container element (#task-list) not found in DOM.');
     }
@@ -180,6 +183,9 @@ export function initTaskForm() {
                 task.status = task.status === 'pending' ? 'completed' : 'pending';
                 card.setAttribute('data-status', task.status);
                 console.log(`[Delegation Toggle] Task ${taskId} set to: ${task.status}`);
+                
+                // Update counters after completion toggled
+                updateCounters();
             } else if (btn.classList.contains('btn-edit')) {
                 // Edit Action
                 const newTitle = prompt('Edit task title:', task.title);
@@ -204,12 +210,18 @@ export function initTaskForm() {
                 tasks = tasks.filter(t => t.id !== taskId);
                 card.remove();
                 console.log(`[Delegation Delete] Task ${taskId} removed from memory and DOM`);
+                
+                // Update counters after task deleted
+                updateCounters();
             }
         });
     }
 
     // Initialize task search and filtering functionality (Phase 9)
     initTaskFilters();
+    
+    // Initialize task counters (Phase 9)
+    updateCounters();
 }
 
 /**
@@ -268,4 +280,26 @@ export function initTaskFilters() {
     if (categoryFilter) {
         categoryFilter.addEventListener('change', applyFilters);
     }
+}
+
+/**
+ * Updates the pending and completed task counters in the UI.
+ */
+export function updateCounters() {
+    const pendingCount = tasks.filter(t => t.status === 'pending').length;
+    const completedCount = tasks.filter(t => t.status === 'completed').length;
+
+    const pendingEl = document.getElementById('pending-count');
+    const completedEl = document.getElementById('completed-count');
+
+    if (pendingEl) {
+        // Update DOM textContent property
+        pendingEl.textContent = pendingCount;
+    }
+    if (completedEl) {
+        // Update DOM textContent property
+        completedEl.textContent = completedCount;
+    }
+
+    console.log(`[Task Stats] Counters updated - Pending: ${pendingCount}, Completed: ${completedCount}`);
 }
