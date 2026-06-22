@@ -100,18 +100,11 @@ export function addTask(title, category) {
     const taskList = document.getElementById('task-list');
     if (taskList) {
         const card = createTaskCard(task);
-        
-        // If there's an active search query, filter the new card immediately
-        const searchInput = document.getElementById('task-search');
-        if (searchInput && searchInput.value) {
-            const query = searchInput.value.toLowerCase().trim();
-            if (!task.title.toLowerCase().includes(query)) {
-                card.classList.add('is-hidden');
-            }
-        }
-        
         // Add card to DOM using append()
         taskList.append(card);
+        
+        // Apply current active filters to the new task card
+        applyFilters();
     } else {
         console.warn('Task list container element (#task-list) not found in DOM.');
     }
@@ -215,48 +208,64 @@ export function initTaskForm() {
         });
     }
 
-    // Initialize task search functionality (Phase 9)
-    initTaskSearch();
+    // Initialize task search and filtering functionality (Phase 9)
+    initTaskFilters();
 }
 
 /**
- * Filters the visible task cards in the DOM based on the query string.
- * @param {string} query - The search query text.
+ * Applies both search and category filters on all visible task cards in the DOM.
  */
-export function filterTasks(query) {
-    const lowercaseQuery = query.toLowerCase().trim();
+export function applyFilters() {
+    const searchInput = document.getElementById('task-search');
+    const categoryFilter = document.getElementById('task-category-filter');
+
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    const selectedCategory = categoryFilter ? categoryFilter.value : 'all';
+
     const taskCards = document.querySelectorAll('.task-card');
 
     taskCards.forEach(card => {
         const titleEl = card.querySelector('.task-title');
+        // Read custom data-category attribute set during card creation
+        const cardCategory = card.getAttribute('data-category');
+
+        let matchesSearch = true;
+        let matchesCategory = true;
+
         if (titleEl) {
             // PROPERTY vs ATTRIBUTE demonstration/use:
             // - titleEl.textContent is a live DOM property reflecting the current visible text node content.
             const titleText = titleEl.textContent.toLowerCase();
-            
-            if (titleText.includes(lowercaseQuery)) {
-                card.classList.remove('is-hidden');
-            } else {
-                card.classList.add('is-hidden');
-            }
+            matchesSearch = titleText.includes(query);
+        }
+
+        if (selectedCategory !== 'all') {
+            matchesCategory = (cardCategory === selectedCategory);
+        }
+
+        // Only show if the task card matches both search and category filter criteria
+        if (matchesSearch && matchesCategory) {
+            card.classList.remove('is-hidden');
+        } else {
+            card.classList.add('is-hidden');
         }
     });
-    console.log(`[Task Search] Filtered cards using query: "${lowercaseQuery}"`);
+
+    console.log(`[Task Filter] Applied filters - Query: "${query}", Category: "${selectedCategory}"`);
 }
 
 /**
- * Initializes the task search input event listener.
+ * Initializes listeners for search input and category filter change events.
  */
-export function initTaskSearch() {
+export function initTaskFilters() {
     const searchInput = document.getElementById('task-search');
-    if (!searchInput) {
-        console.warn('Search input element not found in DOM.');
-        return;
+    const categoryFilter = document.getElementById('task-category-filter');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', applyFilters);
     }
 
-    searchInput.addEventListener('input', (e) => {
-        // e.target.value retrieves the current property value of the input element
-        // rather than its initial HTML attribute value.
-        filterTasks(e.target.value);
-    });
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', applyFilters);
+    }
 }

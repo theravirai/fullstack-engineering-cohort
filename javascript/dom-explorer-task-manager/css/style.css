@@ -491,21 +491,21 @@ select:focus {
     }
 }
 
-/* Phase 9: Task Search Styles */
-.search-container {
+/* Phase 9: Task Filter and Search Styles */
+.filter-controls {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--card-border);
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
 }
 
-.search-container label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-color);
-    opacity: 0.8;
+@media (max-width: 600px) {
+    .filter-controls {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
 }
 
 .task-card.is-hidden {
