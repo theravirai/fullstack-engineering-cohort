@@ -187,24 +187,15 @@ export function initTaskForm() {
                 // Update counters after completion toggled
                 updateCounters();
             } else if (btn.classList.contains('btn-edit')) {
-                // Edit Action
-                const newTitle = prompt('Edit task title:', task.title);
-                if (newTitle === null) return;
-                const trimmedTitle = newTitle.trim();
-                if (trimmedTitle === '') {
-                    alert('Task title cannot be empty.');
-                    return;
+                // Open Custom Edit Dialog instead of prompt() (Phase 9 Expansion)
+                const editDialog = document.getElementById('edit-dialog');
+                const editInput = document.getElementById('edit-task-title');
+                if (editDialog && editInput) {
+                    editInput.value = task.title;
+                    editDialog.setAttribute('data-task-id', taskId);
+                    editDialog.showModal();
                 }
-                task.title = trimmedTitle;
-
-                const oldTitleEl = card.querySelector('.task-title');
-                if (oldTitleEl) {
-                    const newTitleEl = document.createElement('h3');
-                    newTitleEl.classList.add('task-title');
-                    newTitleEl.appendChild(document.createTextNode(task.title));
-                    oldTitleEl.replaceWith(newTitleEl);
-                }
-                console.log(`[Delegation Edit] Task ${taskId} updated to: ${task.title}`);
+                console.log(`[Dialog Trigger] Opened edit modal for task: ${taskId}`);
             } else if (btn.classList.contains('btn-delete')) {
                 // Delete Action
                 tasks = tasks.filter(t => t.id !== taskId);
@@ -221,25 +212,11 @@ export function initTaskForm() {
     const clearAllBtn = document.getElementById('clear-all-btn');
     if (clearAllBtn) {
         clearAllBtn.addEventListener('click', () => {
-            if (tasks.length === 0) {
-                alert('No tasks to clear.');
-                return;
-            }
-            
-            const confirmed = confirm('Are you sure you want to clear all tasks? This action cannot be undone.');
-            if (confirmed) {
-                // Clear the state array
-                tasks = [];
-                
-                // Clear all child nodes from the DOM container (using modern replaceChildren API)
-                const taskList = document.getElementById('task-list');
-                if (taskList) {
-                    taskList.replaceChildren();
-                }
-                
-                // Update counters
-                updateCounters();
-                console.log('[Clear All] Cleared all tasks from memory and DOM');
+            if (tasks.length === 0) return; // Guard
+
+            const confirmDialog = document.getElementById('confirm-clear-dialog');
+            if (confirmDialog) {
+                confirmDialog.showModal();
             }
         });
     }
@@ -249,6 +226,9 @@ export function initTaskForm() {
     
     // Initialize task counters (Phase 9)
     updateCounters();
+
+    // Initialize custom dialog elements & events (Phase 9 Expansion)
+    initCustomDialogs();
 }
 
 /**
@@ -328,5 +308,106 @@ export function updateCounters() {
         completedEl.textContent = completedCount;
     }
 
+    // Enable/disable Clear All button based on tasks length (replaces No Tasks Alert)
+    const clearAllBtn = document.getElementById('clear-all-btn');
+    if (clearAllBtn) {
+        clearAllBtn.disabled = (tasks.length === 0);
+    }
+
     console.log(`[Task Stats] Counters updated - Pending: ${pendingCount}, Completed: ${completedCount}`);
+}
+
+/**
+ * Setup custom dialog forms and click event handlers (Phase 9 Expansion).
+ */
+export function initCustomDialogs() {
+    const editDialog = document.getElementById('edit-dialog');
+    const editForm = document.getElementById('edit-form');
+    const editCancelBtn = document.getElementById('edit-cancel-btn');
+
+    if (editForm && editDialog) {
+        editForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent standard browser dialog return behavior
+            const taskId = editDialog.getAttribute('data-task-id');
+            const editInput = document.getElementById('edit-task-title');
+            if (!editInput) return;
+
+            const trimmedTitle = editInput.value.trim();
+            if (trimmedTitle === '') return;
+
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                task.title = trimmedTitle;
+
+                const card = document.querySelector(`.task-card[data-id="${taskId}"]`);
+                if (card) {
+                    const oldTitleEl = card.querySelector('.task-title');
+                    if (oldTitleEl) {
+                        const newTitleEl = document.createElement('h3');
+                        newTitleEl.classList.add('task-title');
+                        newTitleEl.appendChild(document.createTextNode(task.title));
+                        oldTitleEl.replaceWith(newTitleEl);
+                    }
+                }
+                console.log(`[Dialog Edit] Task ${taskId} updated to: ${task.title}`);
+            }
+            editDialog.close();
+        });
+    }
+
+    if (editCancelBtn && editDialog) {
+        editCancelBtn.addEventListener('click', () => {
+            editDialog.close();
+        });
+    }
+
+    const confirmDialog = document.getElementById('confirm-clear-dialog');
+    const confirmForm = document.getElementById('confirm-clear-form');
+    const confirmCancelBtn = document.getElementById('confirm-cancel-btn');
+
+    if (confirmForm && confirmDialog) {
+        confirmForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Clear the state array
+            tasks = [];
+            
+            // Clear all child nodes from the DOM container (using modern replaceChildren API)
+            const taskList = document.getElementById('task-list');
+            if (taskList) {
+                taskList.replaceChildren();
+            }
+            
+            updateCounters();
+            confirmDialog.close();
+            console.log('[Dialog Clear] Wiped all task nodes and memory state.');
+        });
+    }
+
+    if (confirmCancelBtn && confirmDialog) {
+        confirmCancelBtn.addEventListener('click', () => {
+            confirmDialog.close();
+        });
+    }
+
+    // Light dismiss fallback for browsers lacking closedby="any" support (Safari compatibility)
+    const dialogs = document.querySelectorAll('dialog[closedby="any"]');
+    dialogs.forEach(dialog => {
+        if (!('closedBy' in HTMLDialogElement.prototype)) {
+            dialog.addEventListener('click', (event) => {
+                if (event.target !== dialog) return;
+
+                const rect = dialog.getBoundingClientRect();
+                const isDialogContent = (
+                    rect.top <= event.clientY &&
+                    event.clientY <= rect.top + rect.height &&
+                    rect.left <= event.clientX &&
+                    event.clientX <= rect.left + rect.width
+                );
+
+                if (!isDialogContent) {
+                    dialog.close();
+                }
+            });
+        }
+    });
 }
