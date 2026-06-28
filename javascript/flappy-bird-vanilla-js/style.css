@@ -49,21 +49,50 @@ body {
   user-select: none;
 }
 
-.pipe {
+.pipe-pair {
   position: absolute;
-  background-color: #333;
-}
-
-.pipe:nth-child(1) {
+  left: 100%;
   top: 0;
-  left: 100%;
-  width: 50px;
-  height: 200px;
+  height: 100%;
+  width: 70px;
 }
 
-.pipe:nth-child(2) {
+.pipe {
+  width: 52px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, #4aa53a, #5ec548 30%, #73d856 50%, #5ec548 70%, #4aa53a);
+  border: 3px solid #2e7d22;
+  border-radius: 2px;
+}
+
+/* Cap / lip at the pipe opening — wider than the pipe body */
+.pipe::after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  width: calc(100% + 12px);
+  height: 28px;
+  background: linear-gradient(to right, #4aa53a, #5ec548 30%, #73d856 50%, #5ec548 70%, #4aa53a);
+  border: 3px solid #2e7d22;
+  border-radius: 3px;
+}
+
+.pipe-top {
+  top: 0;
+}
+
+/* Cap sits at the bottom of the top pipe */
+.pipe-top::after {
   bottom: 0;
-  left: 100%;
-  width: 50px;
-  height: 200px;
+}
+
+.pipe-bottom {
+  bottom: 0;
+}
+
+/* Cap sits at the top of the bottom pipe */
+.pipe-bottom::after {
+  top: 0;
 }
