@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FinTrack Pro - Personal Finance Tracker</title>
+  <title>FinTrack Pro</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,17 +11,93 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
-    /* Reset and font configuration */
+    /* CSS Variables for Light Mode */
+    :root {
+      /* Colors */
+      --primary: #4f46e5;       /* Indigo */
+      --primary-hover: #4338ca;
+      --income: #10b981;        /* Green */
+      --income-hover: #059669;
+      --income-bg: #ecfdf5;
+      --expense: #ef4444;       /* Red */
+      --expense-hover: #dc2626;
+      --expense-bg: #fef2f2;
+      --background: #f8fafc;    /* Neutral Light */
+      --card-bg: #ffffff;
+      --text: #0f172a;          /* Neutral Dark */
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      
+      /* Theme Transition */
+      --transition-speed: 0.3s;
+    }
+
+    /* CSS Variables for Dark Mode overrides */
+    body.dark {
+      --background: #0f172a;    /* Deep navy / Slate */
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --income-bg: rgba(16, 185, 129, 0.1);
+      --expense-bg: rgba(239, 68, 68, 0.1);
+    }
+
+    /* Layout reset & typography base */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f8fafc;
-      color: #1e293b;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Smooth transitions for theme changes */
+    body, 
+    .card, 
+    nav, 
+    table, 
+    th, 
+    td, 
+    input, 
+    select, 
+    button, 
+    .modal-content {
+      transition: background-color var(--transition-speed) ease, 
+                  color var(--transition-speed) ease, 
+                  border-color var(--transition-speed) ease,
+                  box-shadow var(--transition-speed) ease;
+    }
+
+    /* Page container layout */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .page-section {
+      display: none; /* hidden by default, toggled via JS */
+      margin-top: 70px; /* navbar offset */
+    }
+
+    .page-section.active {
+      display: block;
+      animation: fadeIn var(--transition-speed) ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
