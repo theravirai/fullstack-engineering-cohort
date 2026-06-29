@@ -257,6 +257,81 @@
     .form-control:focus {
       border-color: var(--primary);
     }
+
+    /* Dashboard Summary Cards Grid */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .card-title {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .card-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Color coding left card borders and titles */
+    .card-balance {
+      border-left: 4px solid var(--primary);
+    }
+    
+    .card-balance .card-value {
+      color: var(--primary);
+    }
+
+    .card-income {
+      border-left: 4px solid var(--income);
+    }
+    
+    .card-income .card-value {
+      color: var(--income);
+    }
+
+    .card-expense {
+      border-left: 4px solid var(--expense);
+    }
+    
+    .card-expense .card-value {
+      color: var(--expense);
+    }
+
+    .card-transactions {
+      border-left: 4px solid var(--text-muted);
+    }
+
+    /* Responsive adjustments for the grid */
+    @media (max-width: 1024px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -297,8 +372,28 @@
     
     <!-- Dashboard Section -->
     <section id="dashboard-page" class="page-section active">
-      <h2>Dashboard</h2>
-      <!-- Dashboard content will go here -->
+      <div class="summary-grid">
+        <!-- Balance Card -->
+        <div class="card card-balance">
+          <div class="card-title">Current Balance</div>
+          <div id="balance-val" class="card-value">$0.00</div>
+        </div>
+        <!-- Income Card -->
+        <div class="card card-income">
+          <div class="card-title">Total Income</div>
+          <div id="income-val" class="card-value">$0.00</div>
+        </div>
+        <!-- Expense Card -->
+        <div class="card card-expense">
+          <div class="card-title">Total Expense</div>
+          <div id="expense-val" class="card-value">$0.00</div>
+        </div>
+        <!-- Transactions Card -->
+        <div class="card card-transactions">
+          <div class="card-title">Total Transactions</div>
+          <div id="transactions-count" class="card-value">0</div>
+        </div>
+      </div>
     </section>
 
     <!-- Settings Section -->
