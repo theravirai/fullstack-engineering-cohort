@@ -332,6 +332,90 @@
         gap: 1rem;
       }
     }
+
+    /* Modal overlay background */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    /* Modal box container */
+    .modal-content {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+      animation: modalSlideUp 0.25s ease-out;
+    }
+
+    @keyframes modalSlideUp {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: var(--text);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      background-color: var(--background);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
   </style>
 </head>
 <body>
@@ -352,6 +436,68 @@
     </div>
   </div>
 
+  <!-- Add Transaction Modal overlay popup -->
+  <div id="transaction-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Transaction</h3>
+        <button class="modal-close" onclick="closeTransactionModal()">&times;</button>
+      </div>
+      
+      <form id="transaction-form" onsubmit="handleTransactionSubmit(event)">
+        <div class="modal-body">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="trans-type">Type</label>
+              <select id="trans-type" class="form-control" required>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="trans-category">Category</label>
+              <select id="trans-category" class="form-control" required>
+                <option value="" disabled selected>Select Category</option>
+                <option value="Food & Dining">Food & Dining</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Recharge & Bills">Recharge & Bills</option>
+                <option value="Petrol & Auto">Petrol & Auto</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Salary">Salary</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="trans-amount">Amount</label>
+              <input type="number" id="trans-amount" class="form-control" step="0.01" min="0.01" placeholder="0.00" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="trans-date">Date</label>
+              <input type="date" id="trans-date" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="trans-desc">Description</label>
+            <input type="text" id="trans-desc" class="form-control" placeholder="e.g. Salary, Groceries" required>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeTransactionModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Transaction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Persistent Navbar -->
   <nav class="navbar" style="display: none;">
     <div class="container nav-container">
@@ -361,7 +507,7 @@
         <button id="nav-settings" class="nav-link" onclick="showPage('settings')">Settings</button>
       </div>
       <div class="nav-actions">
-        <button id="btn-add-transaction" class="btn btn-primary">Add Transaction</button>
+        <button id="btn-add-transaction" class="btn btn-primary" onclick="openTransactionModal()">Add Transaction</button>
         <button id="btn-logout" class="btn btn-outline" onclick="handleLogout()">Logout</button>
       </div>
     </div>
@@ -416,6 +562,50 @@
       userName: '',
       currency: 'USD'
     };
+
+    // Open transaction modal and default the date picker to today
+    function openTransactionModal() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('trans-date').value = today;
+      
+      document.getElementById('transaction-modal').classList.add('active');
+    }
+
+    // Reset inputs and close transaction modal
+    function closeTransactionModal() {
+      document.getElementById('transaction-form').reset();
+      document.getElementById('transaction-modal').classList.remove('active');
+    }
+
+    // Close modal window if overlay backdrop is clicked directly
+    window.addEventListener('click', function(event) {
+      const modal = document.getElementById('transaction-modal');
+      if (event.target === modal) {
+        closeTransactionModal();
+      }
+    });
+
+    // Form submit validation handler
+    function handleTransactionSubmit(e) {
+      e.preventDefault();
+
+      const type = document.getElementById('trans-type').value;
+      const category = document.getElementById('trans-category').value;
+      const amount = parseFloat(document.getElementById('trans-amount').value);
+      const date = document.getElementById('trans-date').value;
+      const desc = document.getElementById('trans-desc').value.trim();
+
+      // Form validation rules check
+      if (!type || !category || isNaN(amount) || amount <= 0 || !date || !desc) {
+        alert("Please fill in all transaction form fields correctly!");
+        return;
+      }
+
+      console.log("Validated form input successfully:", { type, category, amount, date, desc });
+
+      // Save transactions logic will be wired in Phase 6
+      closeTransactionModal();
+    }
 
     // Toggles between page sections without reloading
     function showPage(pageId) {
