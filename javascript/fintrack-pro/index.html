@@ -543,6 +543,30 @@
       color: var(--text-muted);
       font-size: 0.95rem;
     }
+
+    /* Chart section styling */
+    .chart-section {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .chart-header {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .chart-container-inner {
+      position: relative;
+      width: 100%;
+      height: 300px;
+    }
   </style>
 </head>
 <body>
@@ -665,6 +689,14 @@
         <div class="card card-transactions">
           <div class="card-title">Total Transactions</div>
           <div id="transactions-count" class="card-value">0</div>
+        </div>
+      </div>
+
+      <!-- Cash Flow Chart Section -->
+      <div class="chart-section" id="chart-section-element">
+        <h3 class="chart-header">Cash Flow Analysis</h3>
+        <div class="chart-container-inner">
+          <canvas id="cash-flow-chart"></canvas>
         </div>
       </div>
 
@@ -820,6 +852,135 @@
       const dateObj = new Date(dateString);
       if (isNaN(dateObj.getTime())) return dateString;
       return dateObj.toLocaleDateString(undefined, options);
+    }
+
+    // Chart.js instance holder
+    let chartInstance = null;
+
+    // Render aggregated income/expense bars chronologically using Chart.js
+    function renderChart() {
+      const canvas = document.getElementById('cash-flow-chart');
+      if (!canvas) return;
+
+      // Always destroy existing chart instance to avoid rendering overlaps
+      if (chartInstance !== null) {
+        chartInstance.destroy();
+        chartInstance = null;
+      }
+
+      const transactions = state.transactions;
+
+      // Group income/expense amounts by date
+      const dataByDate = {};
+      transactions.forEach(t => {
+        const dateStr = formatDate(t.date);
+        if (!dataByDate[dateStr]) {
+          dataByDate[dateStr] = { income: 0, expense: 0 };
+        }
+        if (t.type === 'income') {
+          dataByDate[dateStr].income += t.amount;
+        } else if (t.type === 'expense') {
+          dataByDate[dateStr].expense += t.amount;
+        }
+      });
+
+      // Sort dates chronologically (oldest first)
+      const sortedDates = Object.keys(dataByDate).sort((a, b) => new Date(a) - new Date(b));
+
+      const incomeData = [];
+      const expenseData = [];
+
+      sortedDates.forEach(date => {
+        incomeData.push(dataByDate[date].income);
+        expenseData.push(dataByDate[date].expense);
+      });
+
+      // Read active theme styles from CSS variables
+      const primaryTextColor = getComputedStyle(document.body).getPropertyValue('--text').trim();
+      const mutedTextColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim();
+      const borderColor = getComputedStyle(document.body).getPropertyValue('--border').trim();
+      const incomeColor = getComputedStyle(document.body).getPropertyValue('--income').trim();
+      const expenseColor = getComputedStyle(document.body).getPropertyValue('--expense').trim();
+
+      const ctx = canvas.getContext('2d');
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: sortedDates,
+          datasets: [
+            {
+              label: 'Income',
+              data: incomeData,
+              backgroundColor: incomeColor,
+              borderRadius: 4,
+              borderWidth: 0
+            },
+            {
+              label: 'Expense',
+              data: expenseData,
+              backgroundColor: expenseColor,
+              borderRadius: 4,
+              borderWidth: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: primaryTextColor,
+                font: {
+                  family: "'Inter', sans-serif",
+                  size: 12
+                }
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.9)',
+              titleColor: '#fff',
+              bodyColor: '#fff',
+              font: {
+                family: "'Inter', sans-serif"
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                color: mutedTextColor,
+                font: {
+                  family: "'Inter', sans-serif",
+                  size: 11
+                }
+              }
+            },
+            y: {
+              grid: {
+                color: borderColor
+              },
+              ticks: {
+                color: mutedTextColor,
+                font: {
+                  family: "'Inter', sans-serif",
+                  size: 11
+                },
+                callback: function(value) {
+                  // Format value with selected currency symbol (USD $ default)
+                  if (typeof formatCurrency === 'function') {
+                    return formatCurrency(value);
+                  }
+                  return '$' + value;
+                }
+              }
+            }
+          }
+        }
+      });
     }
 
     // --- Storage operations helper functions ---
