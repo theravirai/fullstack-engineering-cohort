@@ -560,8 +560,98 @@
       isLoggedIn: false,
       currentPage: 'dashboard',
       userName: '',
-      currency: 'USD'
+      currency: 'USD',
+      transactions: [] // Memory storage for transactions list
     };
+
+    // --- Storage operations helper functions ---
+
+    // Fetch transactions list from browser storage
+    function loadTransactions() {
+      const data = localStorage.getItem('fintrack_transactions');
+      return data ? JSON.parse(data) : [];
+    }
+
+    // Save transactions list to browser storage
+    function saveTransactions(list) {
+      localStorage.setItem('fintrack_transactions', JSON.stringify(list));
+    }
+
+    // --- CRUD operations ---
+
+    // Add a new transaction object and refresh application UI
+    function addTransaction(type, category, amount, date, desc) {
+      const newTransaction = {
+        id: Date.now(), // Unique ID derived from timestamp
+        type: type,
+        category: category,
+        amount: amount,
+        date: date,
+        description: desc
+      };
+
+      state.transactions.push(newTransaction);
+      saveTransactions(state.transactions);
+      
+      refreshAppUI();
+    }
+
+    // Remove transaction matching the ID and refresh application UI
+    function deleteTransaction(id) {
+      state.transactions = state.transactions.filter(t => t.id !== id);
+      saveTransactions(state.transactions);
+      
+      refreshAppUI();
+    }
+
+    // Calculate sum of income and expenses and update stats cards
+    function updateSummaryCards() {
+      let totalIncome = 0;
+      let totalExpense = 0;
+
+      state.transactions.forEach(t => {
+        if (t.type === 'income') {
+          totalIncome += t.amount;
+        } else if (t.type === 'expense') {
+          totalExpense += t.amount;
+        }
+      });
+
+      const balance = totalIncome - totalExpense;
+      const count = state.transactions.length;
+
+      // Update card content with simple currency format (dynamic symbols in Phase 9)
+      document.getElementById('balance-val').textContent = formatCurrency(balance);
+      document.getElementById('income-val').textContent = formatCurrency(totalIncome);
+      document.getElementById('expense-val').textContent = formatCurrency(totalExpense);
+      document.getElementById('transactions-count').textContent = count;
+    }
+
+    // Simple currency formatting function
+    function formatCurrency(amount) {
+      const absVal = Math.abs(amount).toFixed(2);
+      const sign = amount < 0 ? '-' : '';
+      
+      // Default to $ for now
+      return `${sign}$${absVal}`;
+    }
+
+    // Master refresh function to update all dynamic UI pieces
+    function refreshAppUI() {
+      updateSummaryCards();
+      
+      // Hook for rendering transaction table (Phase 7)
+      if (typeof renderTable === 'function') {
+        renderTable();
+      }
+      
+      // Hook for rendering Chart.js canvas (Phase 8)
+      if (typeof renderChart === 'function') {
+        renderChart();
+      }
+    }
+
+    // --- Modal operations ---
 
     // Open transaction modal and default the date picker to today
     function openTransactionModal() {
@@ -601,11 +691,13 @@
         return;
       }
 
-      console.log("Validated form input successfully:", { type, category, amount, date, desc });
+      // Add to list and storage
+      addTransaction(type, category, amount, date, desc);
 
-      // Save transactions logic will be wired in Phase 6
       closeTransactionModal();
     }
+
+    // --- Navigation operations ---
 
     // Toggles between page sections without reloading
     function showPage(pageId) {
@@ -641,7 +733,12 @@
       document.getElementById('app').style.display = 'block';
       document.querySelector('.navbar').style.display = 'block';
       document.getElementById('login-screen').style.display = 'none';
+      
+      // Load stored transactions on login/startup
+      state.transactions = loadTransactions();
+      
       showPage(state.currentPage);
+      refreshAppUI();
     }
 
     // Handle name submission to log in
@@ -668,6 +765,7 @@
     function handleLogout() {
       state.isLoggedIn = false;
       state.userName = '';
+      state.transactions = [];
 
       localStorage.removeItem('fintrack_isLoggedIn');
       localStorage.removeItem('fintrack_userName');
