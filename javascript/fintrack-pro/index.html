@@ -664,18 +664,57 @@
 </head>
 <body>
 
-  <!-- Login Screen -->
+  <!-- Authentication Screen (Login & Register Cards) -->
   <div id="login-screen" class="login-screen-wrapper">
-    <div class="login-card">
+    <!-- Login Card -->
+    <div id="login-card-box" class="login-card">
       <div class="login-logo">FinTrack Pro</div>
-      <p>Log in to track your balance, income, and expenses</p>
+      <h2 style="font-weight: 700; font-size: 1.75rem; color: var(--text); margin-bottom: 0.5rem; margin-top: 1rem;">Welcome Back</h2>
+      <p style="margin-bottom: 1.5rem;">Login to FinTrack Pro</p>
       
-      <form onsubmit="handleLogin(event)">
+      <form onsubmit="handleLoginSubmit(event)">
         <div class="form-group">
-          <label for="login-username">Display Name</label>
-          <input type="text" id="login-username" class="form-control" placeholder="Enter your name" required>
+          <label for="login-username">Username</label>
+          <input type="text" id="login-username" class="form-control" placeholder="Enter your username" required>
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Get Started</button>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; font-weight: 600; margin-bottom: 1rem;">Login</button>
+        <p style="font-size: 0.875rem; margin-bottom: 0; color: var(--text-muted);">
+          Don't have an account? <a href="#" onclick="toggleAuthForms(event, 'register')" style="color: var(--primary); text-decoration: none; font-weight: 600;">Register here</a>
+        </p>
+      </form>
+    </div>
+
+    <!-- Register Card (Hidden by default) -->
+    <div id="register-card-box" class="login-card" style="display: none;">
+      <div class="login-logo">FinTrack Pro</div>
+      <h2 style="font-weight: 700; font-size: 1.75rem; color: var(--text); margin-bottom: 0.5rem; margin-top: 1rem;">Create Account</h2>
+      <p style="margin-bottom: 1.5rem;">Register to FinTrack Pro</p>
+      
+      <form onsubmit="handleRegisterSubmit(event)">
+        <div class="form-group">
+          <label for="register-username">Username</label>
+          <input type="text" id="register-username" class="form-control" placeholder="Choose a username" required>
+        </div>
+        <div class="form-group">
+          <label for="register-name">Display Name</label>
+          <input type="text" id="register-name" class="form-control" placeholder="Enter your display name" required>
+        </div>
+        <div class="form-group">
+          <label for="register-password">Password</label>
+          <input type="password" id="register-password" class="form-control" placeholder="Choose a password" required>
+        </div>
+        <div class="form-group">
+          <label for="register-confirm-password">Confirm Password</label>
+          <input type="password" id="register-confirm-password" class="form-control" placeholder="Confirm your password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; font-weight: 600; margin-bottom: 1rem;">Register</button>
+        <p style="font-size: 0.875rem; margin-bottom: 0; color: var(--text-muted);">
+          Already have an account? <a href="#" onclick="toggleAuthForms(event, 'login')" style="color: var(--primary); text-decoration: none; font-weight: 600;">Login here</a>
+        </p>
       </form>
     </div>
   </div>
@@ -886,7 +925,8 @@
     const state = {
       isLoggedIn: false,
       currentPage: 'dashboard',
-      userName: '',
+      userName: '', // Display Name
+      username: '', // Unique username
       currency: 'USD',
       transactions: [], // Memory storage for transactions list
       activeFilter: 'all' // Holds current transaction table filter type
@@ -1295,6 +1335,7 @@
       document.getElementById('app').style.display = 'none';
       document.querySelector('.navbar').style.display = 'none';
       document.getElementById('login-screen').style.display = 'flex';
+      toggleAuthForms(null, 'login'); // Default to login panel
     }
 
     // Displays main app interface
@@ -1323,6 +1364,117 @@
       refreshAppUI();
     }
 
+    // Load registered users database or initialize a default test account
+    function loadUsersDatabase() {
+      const data = localStorage.getItem('fintrack_users');
+      if (data) {
+        return JSON.parse(data);
+      }
+      
+      // Default test account (username: admin, password: admin)
+      const defaultDb = {
+        "admin": {
+          password: "admin",
+          displayName: "Administrator"
+        }
+      };
+      localStorage.setItem('fintrack_users', JSON.stringify(defaultDb));
+      return defaultDb;
+    }
+
+    // Toggle between Login card and Register card views
+    function toggleAuthForms(e, targetForm) {
+      if (e) e.preventDefault();
+      
+      const loginCard = document.getElementById('login-card-box');
+      const registerCard = document.getElementById('register-card-box');
+      
+      if (targetForm === 'register') {
+        loginCard.style.display = 'none';
+        registerCard.style.display = 'block';
+        document.getElementById('login-username').value = '';
+        document.getElementById('login-password').value = '';
+      } else {
+        loginCard.style.display = 'block';
+        registerCard.style.display = 'none';
+        document.getElementById('register-username').value = '';
+        document.getElementById('register-name').value = '';
+        document.getElementById('register-password').value = '';
+        document.getElementById('register-confirm-password').value = '';
+      }
+    }
+
+    // Handle registration form submission
+    function handleRegisterSubmit(e) {
+      e.preventDefault();
+      
+      const usernameInput = document.getElementById('register-username').value.trim().toLowerCase();
+      const displayNameInput = document.getElementById('register-name').value.trim();
+      const passwordInput = document.getElementById('register-password').value;
+      const confirmInput = document.getElementById('register-confirm-password').value;
+
+      if (!usernameInput || !displayNameInput || !passwordInput) {
+        alert("Please fill in all registration fields!");
+        return;
+      }
+
+      if (passwordInput !== confirmInput) {
+        alert("Passwords do not match! Please check and try again.");
+        return;
+      }
+
+      const usersDb = loadUsersDatabase();
+
+      if (usersDb[usernameInput]) {
+        alert("Username already exists! Please choose another one.");
+        return;
+      }
+
+      // Add new credentials to localStorage user dictionary
+      usersDb[usernameInput] = {
+        password: passwordInput,
+        displayName: displayNameInput
+      };
+      localStorage.setItem('fintrack_users', JSON.stringify(usersDb));
+
+      alert("Registration successful! You can now log in.");
+      toggleAuthForms(null, 'login');
+      document.getElementById('login-username').value = usernameInput;
+      document.getElementById('login-password').focus();
+    }
+
+    // Handle login form authentication
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      
+      const usernameInput = document.getElementById('login-username').value.trim().toLowerCase();
+      const passwordInput = document.getElementById('login-password').value;
+
+      if (!usernameInput || !passwordInput) {
+        alert("Please enter both username and password!");
+        return;
+      }
+
+      const usersDb = loadUsersDatabase();
+      const userRecord = usersDb[usernameInput];
+
+      if (!userRecord || userRecord.password !== passwordInput) {
+        alert("Invalid username or password!");
+        return;
+      }
+
+      state.isLoggedIn = true;
+      state.userName = userRecord.displayName;
+      state.username = usernameInput;
+
+      // Save user session in localStorage
+      localStorage.setItem('fintrack_isLoggedIn', 'true');
+      localStorage.setItem('fintrack_userName', userRecord.displayName);
+      localStorage.setItem('fintrack_usernameKey', usernameInput);
+
+      showMainApp();
+    }
+
     // Save profile changes (Display Name, Currency Code) to local storage
     function handleSettingsSave(e) {
       if (e) e.preventDefault();
@@ -1341,6 +1493,15 @@
       localStorage.setItem('fintrack_userName', updatedName);
       localStorage.setItem('fintrack_currency', updatedCurrency);
 
+      // Update name in registration database
+      if (state.username) {
+        const usersDb = loadUsersDatabase();
+        if (usersDb[state.username]) {
+          usersDb[state.username].displayName = updatedName;
+          localStorage.setItem('fintrack_users', JSON.stringify(usersDb));
+        }
+      }
+
       alert("Settings updated successfully!");
       refreshAppUI();
     }
@@ -1354,6 +1515,7 @@
         
         state.isLoggedIn = false;
         state.userName = '';
+        state.username = '';
         state.currency = 'USD';
         state.transactions = [];
         state.activeFilter = 'all';
@@ -1382,34 +1544,16 @@
       refreshAppUI();
     }
 
-    // Handle name submission to log in
-    function handleLogin(e) {
-      if (e) e.preventDefault();
-      
-      const usernameInput = document.getElementById('login-username').value.trim();
-      if (!usernameInput) {
-        alert("Please enter a valid display name!");
-        return;
-      }
-
-      state.isLoggedIn = true;
-      state.userName = usernameInput;
-
-      // Save user state in localStorage
-      localStorage.setItem('fintrack_isLoggedIn', 'true');
-      localStorage.setItem('fintrack_userName', usernameInput);
-
-      showMainApp();
-    }
-
     // Log out user and wipe local session state
     function handleLogout() {
       state.isLoggedIn = false;
       state.userName = '';
+      state.username = '';
       state.transactions = [];
 
       localStorage.removeItem('fintrack_isLoggedIn');
       localStorage.removeItem('fintrack_userName');
+      localStorage.removeItem('fintrack_usernameKey');
 
       showLoginScreen();
     }
@@ -1426,10 +1570,12 @@
 
       const loggedIn = localStorage.getItem('fintrack_isLoggedIn') === 'true';
       const username = localStorage.getItem('fintrack_userName');
+      const uniqueHandle = localStorage.getItem('fintrack_usernameKey');
 
       if (loggedIn && username) {
         state.isLoggedIn = true;
         state.userName = username;
+        state.username = uniqueHandle || '';
         showMainApp();
       } else {
         showLoginScreen();
