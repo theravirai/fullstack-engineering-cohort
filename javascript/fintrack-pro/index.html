@@ -762,6 +762,12 @@
     
     <!-- Dashboard Section -->
     <section id="dashboard-page" class="page-section active">
+      <!-- Dashboard Welcome Header -->
+      <div class="dashboard-header-row" style="margin-top: 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <h2 style="font-weight: 700; font-size: 1.5rem; color: var(--text);">Dashboard</h2>
+        <span style="font-size: 0.95rem; color: var(--text-muted);">Welcome back, <strong id="user-display-name" style="color: var(--primary);">Guest</strong>!</span>
+      </div>
+
       <div class="summary-grid">
         <!-- Balance Card -->
         <div class="card card-balance">
@@ -1195,6 +1201,12 @@
 
     // Master refresh function to update all dynamic UI pieces
     function refreshAppUI() {
+      // Sync welcome greeting display name
+      const userNameSpan = document.getElementById('user-display-name');
+      if (userNameSpan) {
+        userNameSpan.textContent = state.userName || 'Guest';
+      }
+
       updateSummaryCards();
       
       // Hook for rendering transaction table (Phase 7)
