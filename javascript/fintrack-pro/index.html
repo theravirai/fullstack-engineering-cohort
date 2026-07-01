@@ -1303,6 +1303,10 @@
       document.getElementById('settings-name').value = state.userName;
       document.getElementById('settings-currency').value = state.currency;
       
+      // Sync dark mode toggle checkbox
+      const isDark = document.body.classList.contains('dark');
+      document.getElementById('settings-darkmode').checked = isDark;
+      
       showPage(state.currentPage);
       refreshAppUI();
     }
@@ -1352,13 +1356,18 @@
       }
     }
 
-    // Temporary placeholder for theme toggles in Phase 9 (will be completed in Phase 10)
+    // Handle dark theme checkbox toggles and write to storage
     function handleDarkThemeToggle(isChecked) {
       if (isChecked) {
         document.body.classList.add('dark');
+        localStorage.setItem('fintrack_theme', 'dark');
       } else {
         document.body.classList.remove('dark');
+        localStorage.setItem('fintrack_theme', 'light');
       }
+      
+      // Re-create the chart so it updates tooltips and labels colors for dark mode
+      refreshAppUI();
     }
 
     // Handle name submission to log in
@@ -1393,8 +1402,16 @@
       showLoginScreen();
     }
 
-    // Startup check for existing local session
+    // Startup check for existing local session and dark theme
     function checkSessionOnLoad() {
+      // Apply dark theme before rendering anything to avoid styling flash
+      const storedTheme = localStorage.getItem('fintrack_theme');
+      if (storedTheme === 'dark') {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+      }
+
       const loggedIn = localStorage.getItem('fintrack_isLoggedIn') === 'true';
       const username = localStorage.getItem('fintrack_userName');
 
