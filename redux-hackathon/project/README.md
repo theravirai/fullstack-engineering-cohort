@@ -1,8 +1,19 @@
 # Task System
 
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+
 A minimal, industrial-themed React application built to demonstrate core state management principles using Redux Toolkit. 
 
 This project is part of a Redux Toolkit learning hackathon, focusing on building a strict unidirectional data flow (UI → Actions → Reducers → State) rather than relying on complex UI frameworks.
+
+## Screenshots
+
+| Home | Edit Task |
+| :---: | :---: |
+| !["Home Screen"](../screenshots/home.png) | !["Edit Task"](../screenshots/update-todo.png) |
 
 ## Features
 
