@@ -60,25 +60,24 @@ const TodoItem = ({ todo }) => {
       <div className="todo-actions">
         {isEditing ? (
           <>
-            <button className="btn-icon" onClick={handleSave} title="Save" aria-label="Save changes">
-              💾
+            <button className="btn-text" onClick={handleSave} aria-label="Save changes">
+              Save
             </button>
-            <button className="btn-icon" onClick={handleCancel} title="Cancel" aria-label="Cancel editing">
-              ❌
+            <button className="btn-text" onClick={handleCancel} aria-label="Cancel editing">
+              Cancel
             </button>
           </>
         ) : (
           <>
-            <button className="btn-icon edit-btn" onClick={() => setIsEditing(true)} title="Edit task" aria-label={`Edit task: ${todo.text}`}>
-              ✏️
+            <button className="btn-text edit-btn" onClick={() => setIsEditing(true)} aria-label={`Edit task: ${todo.text}`}>
+              Edit
             </button>
             <button 
-              className="btn-icon delete-btn" 
+              className="btn-text delete-btn" 
               onClick={() => dispatch(deleteTodo(todo.id))}
-              title="Delete task"
               aria-label={`Delete task: ${todo.text}`}
             >
-              🗑️
+              Delete
             </button>
           </>
         )}

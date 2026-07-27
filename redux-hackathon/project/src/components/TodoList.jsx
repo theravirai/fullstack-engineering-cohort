@@ -5,10 +5,8 @@ import { setFilter, clearCompleted } from '../features/todos/todoSlice';
 const TodoList = () => {
   const dispatch = useDispatch();
   
-  // Read both todos and current filter from Redux
   const { todos, filter } = useSelector((state) => state.todos);
 
-  // Derived state: calculate which todos to show based on the filter
   const filteredTodos = todos.filter((todo) => {
     if (filter === 'active') return !todo.completed;
     if (filter === 'completed') return todo.completed;
@@ -21,9 +19,9 @@ const TodoList = () => {
 
   return (
     <div className="todo-list-container">
-      {/* Task Counter Status Bar */}
+      {/* Dashboard Divider Status Bar */}
       <div className="status-bar">
-        <span>Total Tasks: <strong>{totalCount}</strong></span>
+        <span>Tasks (<strong>{totalCount}</strong>)</span>
         <span>Completed: <strong>{completedCount}</strong></span>
         <span>Remaining: <strong>{activeCount}</strong></span>
       </div>
@@ -47,28 +45,31 @@ const TodoList = () => {
         </ul>
       )}
 
-      {/* Footer / Stats (Only show if there are any todos at all) */}
+      {/* Footer Dashboard Divider */}
       {todos.length > 0 && (
         <div className="todo-footer">
-          <div className="todo-filters">
-            <button 
-              className={filter === 'all' ? 'active-filter' : ''} 
-              onClick={() => dispatch(setFilter('all'))}
-            >
-              All
-            </button>
-            <button 
-              className={filter === 'active' ? 'active-filter' : ''} 
-              onClick={() => dispatch(setFilter('active'))}
-            >
-              Active
-            </button>
-            <button 
-              className={filter === 'completed' ? 'active-filter' : ''} 
-              onClick={() => dispatch(setFilter('completed'))}
-            >
-              Completed
-            </button>
+          <div className="filter-section">
+            <div className="filter-label">Filter:</div>
+            <div className="todo-filters">
+              <button 
+                className={filter === 'all' ? 'active-filter' : ''} 
+                onClick={() => dispatch(setFilter('all'))}
+              >
+                All
+              </button>
+              <button 
+                className={filter === 'active' ? 'active-filter' : ''} 
+                onClick={() => dispatch(setFilter('active'))}
+              >
+                Active
+              </button>
+              <button 
+                className={filter === 'completed' ? 'active-filter' : ''} 
+                onClick={() => dispatch(setFilter('completed'))}
+              >
+                Completed
+              </button>
+            </div>
           </div>
 
           <button 
@@ -76,7 +77,7 @@ const TodoList = () => {
             onClick={() => dispatch(clearCompleted())}
             disabled={completedCount === 0}
           >
-            Clear completed
+            [ Clear Completed ]
           </button>
         </div>
       )}
