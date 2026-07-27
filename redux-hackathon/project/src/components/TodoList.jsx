@@ -21,8 +21,8 @@ const TodoList = () => {
     <div className="todo-list-container">
       {todos.length === 0 ? (
         <div className="empty-state">
-          <p>You have no tasks! 🎉</p>
-          <p className="empty-subtitle">Add one above to get started.</p>
+          <p>No tasks yet.</p>
+          <p className="empty-subtitle">Add your first task above.</p>
         </div>
       ) : (
         <ul className="todo-list">

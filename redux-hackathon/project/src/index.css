@@ -59,10 +59,15 @@ body {
 }
 
 /* Form Styles */
+.todo-form-container {
+  margin-bottom: 1.5rem;
+}
+
 .todo-form {
   display: flex;
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+  align-items: stretch; /* Ensures input and button are exactly equal height */
 }
 
 .todo-input, .todo-edit-input {
@@ -94,12 +99,27 @@ body {
   transition: background-color 0.15s ease;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background: var(--primary-hover);
 }
 
-.btn-primary:active {
+.btn-primary:active:not(:disabled) {
   transform: scale(0.97);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.validation-error {
+  color: var(--danger-color);
+  font-size: 0.85rem;
+  margin-left: 0.25rem;
+}
+
+.input-error {
+  border-color: var(--danger-color);
 }
 
 /* List Styles */
