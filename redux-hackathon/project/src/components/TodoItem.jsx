@@ -7,7 +7,7 @@ const TodoItem = ({ todo }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
 
-  const handleUpdate = () => {
+  const handleSave = () => {
     if (editText.trim() && editText !== todo.text) {
       dispatch(updateTodo({ id: todo.id, text: editText.trim() }));
     } else {
@@ -16,15 +16,22 @@ const TodoItem = ({ todo }) => {
     setIsEditing(false);
   };
 
+  const handleCancel = () => {
+    setEditText(todo.text); // Restores the old value from Redux
+    setIsEditing(false);
+  };
+
   return (
     <li className={`todo-item ${todo.completed ? 'completed' : ''}`}>
       <div className="todo-content">
-        <input
-          type="checkbox"
-          className="todo-checkbox"
-          checked={todo.completed}
-          onChange={() => dispatch(toggleTodoStatus(todo.id))}
-        />
+        {!isEditing && (
+          <input
+            type="checkbox"
+            className="todo-checkbox"
+            checked={todo.completed}
+            onChange={() => dispatch(toggleTodoStatus(todo.id))}
+          />
+        )}
         
         {isEditing ? (
           <input
@@ -32,8 +39,10 @@ const TodoItem = ({ todo }) => {
             className="todo-edit-input"
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
-            onBlur={handleUpdate}
-            onKeyDown={(e) => e.key === 'Enter' && handleUpdate()}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleSave();
+              if (e.key === 'Escape') handleCancel();
+            }}
             autoFocus
           />
         ) : (
@@ -44,16 +53,29 @@ const TodoItem = ({ todo }) => {
       </div>
 
       <div className="todo-actions">
-        <button className="btn-icon edit-btn" onClick={() => setIsEditing(!isEditing)} title="Edit task">
-          {isEditing ? '💾' : '✏️'}
-        </button>
-        <button 
-          className="btn-icon delete-btn" 
-          onClick={() => dispatch(deleteTodo(todo.id))}
-          title="Delete task"
-        >
-          🗑️
-        </button>
+        {isEditing ? (
+          <>
+            <button className="btn-icon" onClick={handleSave} title="Save">
+              💾
+            </button>
+            <button className="btn-icon" onClick={handleCancel} title="Cancel">
+              ❌
+            </button>
+          </>
+        ) : (
+          <>
+            <button className="btn-icon edit-btn" onClick={() => setIsEditing(true)} title="Edit task">
+              ✏️
+            </button>
+            <button 
+              className="btn-icon delete-btn" 
+              onClick={() => dispatch(deleteTodo(todo.id))}
+              title="Delete task"
+            >
+              🗑️
+            </button>
+          </>
+        )}
       </div>
     </li>
   );
