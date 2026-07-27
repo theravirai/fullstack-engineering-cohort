@@ -2,6 +2,7 @@ import { createSlice, nanoid } from '@reduxjs/toolkit';
 
 const initialState = {
   todos: [],
+  filter: 'all', // can be 'all', 'active', or 'completed'
 };
 
 export const todoSlice = createSlice({
@@ -36,9 +37,15 @@ export const todoSlice = createSlice({
         existingTodo.completed = !existingTodo.completed;
       }
     },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
+    clearCompleted: (state) => {
+      state.todos = state.todos.filter((todo) => !todo.completed);
+    }
   },
 });
 
-export const { addTodo, deleteTodo, updateTodo, toggleTodoStatus } = todoSlice.actions;
+export const { addTodo, deleteTodo, updateTodo, toggleTodoStatus, setFilter, clearCompleted } = todoSlice.actions;
 
 export default todoSlice.reducer;

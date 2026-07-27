@@ -220,3 +220,60 @@ body {
   font-size: 0.9rem;
   margin-top: 0.5rem;
 }
+
+/* Footer & Filters */
+.todo-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.todo-filters {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.todo-filters button {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.todo-filters button:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+}
+
+.todo-filters button.active-filter {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.clear-completed {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.clear-completed:hover:not(:disabled) {
+  text-decoration: underline;
+  color: var(--danger-color);
+}
+
+.clear-completed:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
