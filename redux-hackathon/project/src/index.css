@@ -125,6 +125,7 @@ body {
   border-radius: 1rem;
   padding: 1rem;
   transition: all 0.2s ease;
+  animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
 .todo-item:hover {
@@ -276,4 +277,50 @@ body {
   opacity: 0.3;
   cursor: not-allowed;
 }
+
+/* =========================================
+   PRO-MAX UX: Micro-interactions & Motion
+   ========================================= */
+
+/* Staggered entrance for list items */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.todo-item:nth-child(1) { animation-delay: 0.05s; }
+.todo-item:nth-child(2) { animation-delay: 0.1s; }
+.todo-item:nth-child(3) { animation-delay: 0.15s; }
+.todo-item:nth-child(4) { animation-delay: 0.2s; }
+.todo-item:nth-child(5) { animation-delay: 0.25s; }
+.todo-item:nth-child(n+6) { animation-delay: 0.3s; }
+
+/* Tactile Tap Feedback */
+.btn-primary:active, 
+.todo-filters button:active, 
+.btn-icon:active {
+  transform: scale(0.92);
+  transition: transform 0.1s;
+}
+
+/* Floating Empty State */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.empty-state p:first-child {
+  font-size: 1.25rem;
+  font-weight: 500;
+  animation: float 4s ease-in-out infinite;
+  display: inline-block;
+}
+
 
