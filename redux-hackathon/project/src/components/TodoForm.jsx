@@ -30,7 +30,7 @@ const TodoForm = () => {
         <input
           id="new-task-input"
           type="text"
-          placeholder="What needs to be done?"
+          placeholder="Enter task details..."
           value={text}
           onChange={handleChange}
           className={`todo-input ${error ? 'input-error' : ''}`}
@@ -43,7 +43,7 @@ const TodoForm = () => {
           disabled={!text.trim()}
           aria-label="Add Task"
         >
-          Add Task
+          ADD ENTRY
         </button>
       </form>
       {error && <p id="error-msg" className="validation-error" role="alert">{error}</p>}
