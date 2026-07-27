@@ -15,10 +15,19 @@ const TodoList = () => {
     return true; // 'all'
   });
 
-  const activeCount = todos.filter(t => !t.completed).length;
+  const totalCount = todos.length;
+  const completedCount = todos.filter(t => t.completed).length;
+  const activeCount = totalCount - completedCount;
 
   return (
     <div className="todo-list-container">
+      {/* Task Counter Status Bar */}
+      <div className="status-bar">
+        <span>Total Tasks: <strong>{totalCount}</strong></span>
+        <span>Completed: <strong>{completedCount}</strong></span>
+        <span>Remaining: <strong>{activeCount}</strong></span>
+      </div>
+
       {todos.length === 0 ? (
         <div className="empty-state">
           <p>No tasks yet.</p>
@@ -41,10 +50,6 @@ const TodoList = () => {
       {/* Footer / Stats (Only show if there are any todos at all) */}
       {todos.length > 0 && (
         <div className="todo-footer">
-          <span className="todo-count">
-            <strong>{activeCount}</strong> {activeCount === 1 ? 'item' : 'items'} left
-          </span>
-          
           <div className="todo-filters">
             <button 
               className={filter === 'all' ? 'active-filter' : ''} 
@@ -69,7 +74,7 @@ const TodoList = () => {
           <button 
             className="clear-completed" 
             onClick={() => dispatch(clearCompleted())}
-            disabled={todos.length - activeCount === 0}
+            disabled={completedCount === 0}
           >
             Clear completed
           </button>
