@@ -26,22 +26,27 @@ const TodoForm = () => {
   return (
     <div className="todo-form-container">
       <form className="todo-form" onSubmit={handleSubmit}>
+        <label htmlFor="new-task-input" className="sr-only">New task</label>
         <input
+          id="new-task-input"
           type="text"
           placeholder="What needs to be done?"
           value={text}
           onChange={handleChange}
           className={`todo-input ${error ? 'input-error' : ''}`}
+          aria-invalid={!!error}
+          aria-describedby={error ? "error-msg" : undefined}
         />
         <button 
           type="submit" 
           className="btn-primary"
           disabled={!text.trim()}
+          aria-label="Add Task"
         >
           Add Task
         </button>
       </form>
-      {error && <p className="validation-error">{error}</p>}
+      {error && <p id="error-msg" className="validation-error" role="alert">{error}</p>}
     </div>
   );
 };

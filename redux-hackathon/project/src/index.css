@@ -334,3 +334,41 @@ body {
 .todo-item:nth-child(2) { animation-delay: 0.1s; }
 .todo-item:nth-child(3) { animation-delay: 0.15s; }
 .todo-item:nth-child(n+4) { animation-delay: 0.2s; }
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  body {
+    padding: 1.5rem 1rem;
+  }
+  
+  .todo-app {
+    padding: 1.5rem;
+  }
+
+  .todo-form {
+    flex-direction: column;
+  }
+
+  .btn-primary {
+    padding: 0.85rem;
+  }
+  
+  .status-bar {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}

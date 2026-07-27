@@ -3,16 +3,16 @@ import TodoList from './components/TodoList';
 
 function App() {
   return (
-    <div className="app-container">
-      <main className="todo-app">
+    <main className="app-container">
+      <section className="todo-app" aria-labelledby="app-title">
         <header className="app-header">
-          <h1>My Tasks</h1>
-          <p>Organize your day with Redux Toolkit</p>
+          <h1 id="app-title">My Tasks</h1>
+          <p>Stay organized and focused.</p>
         </header>
         <TodoForm />
         <TodoList />
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }
 

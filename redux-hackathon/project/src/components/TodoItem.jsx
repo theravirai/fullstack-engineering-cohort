@@ -30,21 +30,26 @@ const TodoItem = ({ todo }) => {
             className="todo-checkbox"
             checked={todo.completed}
             onChange={() => dispatch(toggleTodoStatus(todo.id))}
+            aria-label={`Mark "${todo.text}" as ${todo.completed ? 'active' : 'completed'}`}
           />
         )}
         
         {isEditing ? (
-          <input
-            type="text"
-            className="todo-edit-input"
-            value={editText}
-            onChange={(e) => setEditText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') handleSave();
-              if (e.key === 'Escape') handleCancel();
-            }}
-            autoFocus
-          />
+          <>
+            <label htmlFor={`edit-${todo.id}`} className="sr-only">Edit task</label>
+            <input
+              id={`edit-${todo.id}`}
+              type="text"
+              className="todo-edit-input"
+              value={editText}
+              onChange={(e) => setEditText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSave();
+                if (e.key === 'Escape') handleCancel();
+              }}
+              autoFocus
+            />
+          </>
         ) : (
           <span className="todo-text" onDoubleClick={() => setIsEditing(true)}>
             {todo.text}
@@ -55,22 +60,23 @@ const TodoItem = ({ todo }) => {
       <div className="todo-actions">
         {isEditing ? (
           <>
-            <button className="btn-icon" onClick={handleSave} title="Save">
+            <button className="btn-icon" onClick={handleSave} title="Save" aria-label="Save changes">
               💾
             </button>
-            <button className="btn-icon" onClick={handleCancel} title="Cancel">
+            <button className="btn-icon" onClick={handleCancel} title="Cancel" aria-label="Cancel editing">
               ❌
             </button>
           </>
         ) : (
           <>
-            <button className="btn-icon edit-btn" onClick={() => setIsEditing(true)} title="Edit task">
+            <button className="btn-icon edit-btn" onClick={() => setIsEditing(true)} title="Edit task" aria-label={`Edit task: ${todo.text}`}>
               ✏️
             </button>
             <button 
               className="btn-icon delete-btn" 
               onClick={() => dispatch(deleteTodo(todo.id))}
               title="Delete task"
+              aria-label={`Delete task: ${todo.text}`}
             >
               🗑️
             </button>
