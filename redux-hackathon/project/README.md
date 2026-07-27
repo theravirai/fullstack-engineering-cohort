@@ -9,6 +9,12 @@ A minimal, industrial-themed React application built to demonstrate core state m
 
 This project is part of a Redux Toolkit learning hackathon, focusing on building a strict unidirectional data flow (UI → Actions → Reducers → State) rather than relying on complex UI frameworks.
 
+## 🌟 Quick Links
+- **Live Demo:** [https://redux-hackathon.vercel.app](https://redux-hackathon.vercel.app)
+- **Video Walkthrough:** [Coming Soon (LinkedIn/YouTube)](#)
+3. Designing a nice UI rather than relying on generic templates.
+4. Implementing local storage syncing natively via React `useEffect` hooks tied to the Redux state.
+
 ## Screenshots
 
 | Home | Edit Task |

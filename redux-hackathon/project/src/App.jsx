@@ -4,7 +4,7 @@ import TodoForm from './components/TodoForm';
 
 function App() {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'dark';
+    return localStorage.getItem('theme') || 'light';
   });
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function App() {
           <div className="header-top">
             <h1 id="app-title">Task System</h1>
             <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
-              {theme === 'dark' ? 'LIGHT MODE' : 'DARK MODE'}
+              {theme === 'dark' ? '☀️ LIGHT MODE' : '🌙 DARK MODE'}
             </button>
           </div>
           <p>Redux Toolkit Architecture</p>
