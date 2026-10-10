@@ -1,5 +1,12 @@
 # Interview Practice Tracker
 
+[![Deployment](https://img.shields.io/badge/Deployed-Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://interview-practice-tracker-pied.vercel.app/)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Storage](https://img.shields.io/badge/Storage-LocalStorage-3B82F6?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Completed-10B981?style=flat-square)
+
 A responsive weekly interview-preparation dashboard built for frontend machine coding evaluations. It allows candidates to track, organize, and assess preparation across Data Structures & Algorithms (DSA), Git, Technical concepts, and Machine Coding rounds.
 
 ![Interview Practice Tracker Demo](./assets/interview-practice-tracker.gif)
@@ -8,7 +15,7 @@ A responsive weekly interview-preparation dashboard built for frontend machine c
 
 ## Deliverables Links
 
-- **Live Deployed Application:** [Insert deployment link (Vercel / Netlify / Cloudflare Pages)]
+- **Live Deployed Application:** [https://interview-practice-tracker-pied.vercel.app/](https://interview-practice-tracker-pied.vercel.app/)
 
 ---
 
